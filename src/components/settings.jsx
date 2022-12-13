@@ -5,10 +5,11 @@ import {useContext} from "react";
 import BackButton from "./backButton";
 
 
-function Settings() {
+function SettingsModal({open}) {
   const settingsInfo = useContext(SettingsContext);
+  console.log(settingsInfo.selectedSound);
   return(
-    <div style={{textAlign:'left'}}>
+    <div open={open} style={{textAlign:'left', display: open ? 'block' : 'none'}}>
       <label>work: {settingsInfo.workMinutes}:00</label>
       <ReactSlider
         className={'slider'}
@@ -37,4 +38,4 @@ function Settings() {
   );
 }
 
-export default Settings;
+export default SettingsModal;

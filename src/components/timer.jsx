@@ -1,20 +1,26 @@
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import PlayButton from "./playButton";
-import PauseButton from "./pouseButton";
+import PauseButton from "./pauseButton";
 import SettingsButton from "./buttonSettings";
 import {useContext, useState, useEffect, useRef} from "react";
 import SettingsContext from "./contextSettings";
+import useSound from 'use-sound';
+import boopSfx from '../assets/sound.wav';
+
 
 const red = '#f54e4e';
 const green = '#4aec8c';
 
-function Timer() {
+const Timer = ({open}) => {
+
   const settingsInfo = useContext(SettingsContext);
 
+  // timer
   const [isPaused, setIsPaused] = useState(true);
   const [mode, setMode] = useState('work'); // work/break/null
   const [secondsLeft, setSecondsLeft] = useState(0);
+
 
   const secondsLeftRef = useRef(secondsLeft);
   const isPausedRef = useRef(isPaused);
@@ -25,6 +31,8 @@ function Timer() {
     setSecondsLeft(secondsLeftRef.current);
   }
 
+  const [play] = useSound(boopSfx);
+  
   useEffect(() => {
 
     function switchMode() {
@@ -46,6 +54,7 @@ function Timer() {
         return;
       }
       if (secondsLeftRef.current === 0) {
+        play();
         return switchMode();
       }
 
@@ -65,7 +74,7 @@ function Timer() {
   if(seconds < 10) seconds = '0'+seconds;
 
   return (
-    <div>
+    <div style={{visibility: open ? 'visible' : 'hidden'}}>
       <CircularProgressbar
         value={percentage}
         text={minutes + ':' + seconds}

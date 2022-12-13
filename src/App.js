@@ -3,13 +3,16 @@ import Timer from "./components/timer";
 import Settings from "./components/settings";
 import {useState} from "react";
 import SettingsContext from "./components/contextSettings";
+import boopSfx from './assets/sound.wav';
 
 function App() {
 
   const [showSettings, setShowSettings] = useState(false);
   const [workMinutes, setWorkMinutes] = useState(45);
   const [breakMinutes, setBreakMinutes] = useState(15);
+  const [selectedSound, setSelectedSound] = useState(boopSfx);
 
+  
   return (
     <main>
       <SettingsContext.Provider value={{
@@ -19,8 +22,14 @@ function App() {
         breakMinutes,
         setWorkMinutes,
         setBreakMinutes,
+        selectedSound,
+        setSelectedSound
       }}>
-        {showSettings ? <Settings /> : <Timer />}
+        {/* {showSettings ? <Settings /> : <Timer />} */}
+        <Settings open={showSettings} />
+        <Timer 
+          open={!showSettings} 
+        />
       </SettingsContext.Provider>
     </main>
   );
